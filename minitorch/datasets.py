@@ -21,6 +21,17 @@ class Graph:
 
 
 def simple(N: int) -> Graph:
+    """
+    Generate a linearly separable 2D classification dataset.
+    Points belong to class 1 if their first coordinate is 
+    less than 0.5, and to class 0 otherwise.
+
+    Args:
+        N: Number of points to generate.
+
+    Returns:
+        A Graph containing N two-dimensional points and their labels.
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -30,6 +41,17 @@ def simple(N: int) -> Graph:
 
 
 def diag(N: int) -> Graph:
+    """
+    Generate a 2D classification dataset separated by y = 0.5 - x.
+    Points belong to class 1 if they lie below this line,
+    to class 0 otherwise.
+
+    Args:
+        N: Number of points to generate.
+
+    Returns:
+        A Graph containing N two-dimensional points and their labels.
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -39,6 +61,17 @@ def diag(N: int) -> Graph:
 
 
 def split(N: int) -> Graph:
+    """
+    Generate a 2D classification dataset.
+    Points belong to class 0 if their first coordinate lies
+    inside [0.2, 0.8], class 1 otherwise.
+
+    Args:
+        N: Number of points to generate.
+
+    Returns:
+        A Graph containing N two-dimensional points and their labels.
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -48,6 +81,19 @@ def split(N: int) -> Graph:
 
 
 def xor(N: int) -> Graph:
+    """
+    Generate a 2D classification dataset.
+
+    Points belong to class 1 if they lie in opposite quadrants relative
+    to the lines x = 0.5 and y = 0.5 (second and fourth).
+    Points belong to class 0 otherwise.
+
+    Args:
+        N: Number of points to generate.
+
+    Returns:
+        A Graph containing N two-dimensional points and their binary labels.
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -57,6 +103,19 @@ def xor(N: int) -> Graph:
 
 
 def circle(N: int) -> Graph:
+    """
+    Generate a 2D classification dataset.
+    
+    Points belong to class 1 if they lie outside of the circle 
+    with center in (0.5, 0.5) and radius sqrt(0.1).
+    Otherwise, this class is 0.
+
+    Args:
+        N: Number of points to generate.
+
+    Returns:
+        A Graph containing N two-dimensional points and their binary labels.
+    """
     X = make_pts(N)
     y = []
     for x_1, x_2 in X:
@@ -67,6 +126,19 @@ def circle(N: int) -> Graph:
 
 
 def spiral(N: int) -> Graph:
+    """
+    Generate a 2D classification dataset.
+
+    The dataset consists of two spiral-shaped groups of points,
+    centered around (0.5, 0.5). The first half of the points
+    belong to class 0, and the second half belong to class 1.
+
+    Args:
+        N: Number of points to generate.
+
+    Returns:
+        A Graph containing N two-dimensional points and their binary labels.
+    """
     def x(t: float) -> float:
         return t * math.cos(t) / 20.0
 
