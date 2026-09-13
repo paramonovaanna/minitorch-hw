@@ -23,7 +23,10 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
     # TODO: Implement for Task 1.1.
-    raise NotImplementedError('Need to implement for Task 1.1')
+    vals_pls, vals_mns = list(vals), list(vals)
+    vals_pls[arg] += epsilon / 2
+    vals_mns[arg] -= epsilon / 2
+    return (f(*vals_pls) - f(*vals_mns)) / epsilon
 
 
 variable_count = 1
@@ -62,7 +65,19 @@ def topological_sort(variable: Variable) -> Iterable[Variable]:
         Non-constant Variables in topological order starting from the right.
     """
     # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    visited = set()
+    order = []
+    def dfs(var: Variable) -> None:
+        if var.is_constant():
+            return
+        if var.unique_id in visited:
+            return
+        visited.add(var.unique_id)
+        for parent in var.parents:
+            dfs(parent)
+        order.append(var)
+    dfs(variable)
+    return order[::-1]
 
 
 def backpropagate(variable: Variable, deriv: Any) -> None:
@@ -77,11 +92,21 @@ def backpropagate(variable: Variable, deriv: Any) -> None:
     No return. Should write to its results to the derivative values of each leaf through `accumulate_derivative`.
     """
     # TODO: Implement for Task 1.4.
-    raise NotImplementedError('Need to implement for Task 1.4')
+    derivs = {variable.unique_id: deriv}
+    for variable in topological_sort(variable):
+        derivative = derivs[variable.unique_id]
+        if variable.is_leaf():
+            variable.accumulate_derivative(derivative)
+        else:
+            for parent, parent_derivative in variable.chain_rule(derivative):
+                if parent.unique_id not in derivs:
+                    derivs[parent.unique_id] = parent_derivative
+                else:
+                    derivs[parent.unique_id] += parent_derivative
 
 
 @dataclass
-class Context:
+class Context:  
     """
     Context class is used by `Function` to store information during the forward pass.
     """

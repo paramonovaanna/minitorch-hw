@@ -70,6 +70,7 @@ class ScalarTrain:
     def train(self, data, learning_rate, max_epochs=500, log_fn=default_log_fn):
         self.learning_rate = learning_rate
         self.max_epochs = max_epochs
+        random.seed(42)
         self.model = Network(self.hidden_layers)
         optim = minitorch.SGD(self.model.parameters(), learning_rate)
 
@@ -77,6 +78,9 @@ class ScalarTrain:
         for epoch in range(1, self.max_epochs + 1):
             total_loss = 0.0
             correct = 0
+            if epoch < 5:
+                for name, p in self.model.named_parameters():
+                    print(name, p.value.data, p.value.derivative)
             optim.zero_grad()
 
             # Forward
@@ -110,7 +114,7 @@ class ScalarTrain:
 
 if __name__ == "__main__":
     PTS = 50
-    HIDDEN = 2
+    HIDDEN = 10
     RATE = 0.5
-    data = minitorch.datasets["Simple"](PTS)
+    data = minitorch.datasets["Diag"](PTS)
     ScalarTrain(HIDDEN).train(data, RATE)
